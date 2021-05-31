@@ -1,0 +1,11 @@
+# Project exclude paths
+/_build/dev/lib/certifi/
+/_build/dev/lib/eventsource_ex/
+/_build/dev/lib/hackney/
+/_build/dev/lib/httpoison/
+/_build/dev/lib/idna/
+/_build/dev/lib/metrics/
+/_build/dev/lib/mimerl/
+/_build/dev/lib/poison/
+/_build/dev/lib/ssl_verify_fun/
+/_build/dev/lib/unicode_util_compat/

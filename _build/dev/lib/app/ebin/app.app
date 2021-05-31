@@ -1,0 +1,10 @@
+{application,app,
+             [{applications,[kernel,stdlib,elixir,logger,eventsource_ex,
+                             poison]},
+              {description,"app"},
+              {modules,['Elixir.Emotions','Elixir.Main.Main','Elixir.Router',
+                        'Elixir.Scheduler','Elixir.Server_conn',
+                        'Elixir.Supervisor.Supervisor','Elixir.Worker']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.Tweet.Application',[]}}]}.

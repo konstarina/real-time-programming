@@ -21,6 +21,7 @@ defmodule TwitterStream.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:mongodb, "~> 0.5.1"},
       {:eventsource_ex, "~> 0.0.2"},
       {:poison, "~> 1.4.0"}
     ]

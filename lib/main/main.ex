@@ -4,17 +4,37 @@ defmodule Tweet.Main do
 
 
   use Application
-
+  @impl true
   def start(_type, _args) do
+    import Supervisor.Spec, warn: false
 
     children = [
       %{
-        id: Worker,
-        start: {Worker, :start_link, [""]}
+        id: Database,
+        start: {Database, :start_link, [""]}
       },
       %{
-        id: DynamicSupervisor,
-        start: {DynamicSupervisor, :start_link, [""]}
+        id: Collector,
+        start: {Collector, :start_link, [""]}
+      },
+      %{
+        id: Sentiments.Supervisor,
+        start: {Sentiments.Supervisor, :start_link, [""]}
+      },
+
+      %{
+        id: Tweets.Supervisor,
+        start: {Tweets.Supervisor, :start_link, [""]}
+      },
+
+      %{
+        id: Users.Supervisor,
+        start: {Users.Supervisor, :start_link, [""]}
+      },
+
+      %{
+        id: Engagement.Supervisor,
+        start: {Engagement.Supervisor, :start_link, [""]}
       },
       %{
         id: Router,
@@ -31,6 +51,6 @@ defmodule Tweet.Main do
     ]
     opts = [strategy: :one_for_one, name: Tweet.Supervisor]
 
-    Main.Supervisor.start_link(children, opts)
+    Supervisor.start_link(children, opts)
   end
 end

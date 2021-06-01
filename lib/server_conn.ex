@@ -7,13 +7,13 @@ defmodule Server_conn do
 
   def getTweet() do
     receive do
-      tweetContent -> tweetBehaviour(tweetContent)
+      tweet -> tweetBehaviour(tweet)
     end
     getTweet()
   end
 
-  def tweetBehaviour(tweetContent) do
-    GenServer.cast(Router, {:router, tweetContent})
+  def tweetBehaviour(tweet) do
+    GenServer.cast(Router, {:router, tweet})
     getTweet()
   end
 

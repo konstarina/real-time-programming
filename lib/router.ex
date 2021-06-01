@@ -10,24 +10,16 @@ defmodule Router do
     {:ok, message}
   end
 
-#  def handle_call(_msg, _from, state) do
-#    {:reply, :ok, state}
-#  end
-
   @impl true
   def handle_cast({:router, message}, state) do
-    my_workers = DynamicSupervisor.addWorker(message)
-
-    Enum.each(1..5, fn(_x) ->
-      Registry.register(MyRegistry, my_workers, keys: :unique)
-    end)
-
-    connections = Registry.lookup(MyRegistry)
-    next_index = Scheduler.read_and_increment()
-
-    {pid, _value = nil} = Enum.at(connections, rem(next_index, length(connections)))
-
-    GenServer.cast(pid, {:worker, message})
+    Sentiments.Supervisor.addWorker(message)
+    GenServer.cast(Sentiments.Worker, {:worker, message})
+    Tweets.Supervisor.addWorker(message)
+    GenServer.cast(Tweets.Worker, {:worker, message})
+    Users.Supervisor.addWorker(message)
+    GenServer.cast(Users.Worker, {:worker, message})
+    Engagement.Supervisor.addWorker(message)
+    GenServer.cast(Engagement.Worker, {:worker, message})
     {:noreply, state}
   end
 end

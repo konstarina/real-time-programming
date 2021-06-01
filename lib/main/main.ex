@@ -1,4 +1,4 @@
-defmodule Main.Main do
+defmodule Tweet.Main do
   @moduledoc false
   
 

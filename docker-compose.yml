@@ -1,0 +1,21 @@
+version: "3.6"
+services:
+
+  server:
+    image: alexburlacu/rtp-server:faf18x
+    ports:
+      - 4000:4000
+
+  broker:
+    build:
+      context: broker
+    ports:
+      - 4444:4444
+
+  previouslab:
+    build:
+      context: previouslab
+
+    depends_on:
+      - server
+      - broker

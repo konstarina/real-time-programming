@@ -4,7 +4,7 @@ defmodule Database do
 use GenServer
 
   def start_link(string) do
-    GenServer.start_link(__MODULE__, string, name: __MODULE__, time: :os.system_time(:millisecond))
+    GenServer.start_link(__MODULE__, string, %{time: :os.system_time(:millisecond)}, name: __MODULE__)
   end
 
   def init(_msg) do
@@ -26,7 +26,7 @@ use GenServer
       GenServer.cast(__MODULE__, :batch)
     end
 
-    {:noreply, add_to_db, time: :os.system_time(:millisecond)}
+    {:noreply, add_to_db, %{time: :os.system_time(:millisecond)}}
   end
 
   @impl true
@@ -40,6 +40,6 @@ use GenServer
         end
       end)
     end)
-    {:noreply, [], time: state.time}
+    {:noreply, [], %{time: state.time}}
   end
 end

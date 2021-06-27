@@ -1,38 +1,62 @@
 defmodule Tweets.Worker do
   use GenServer
 
-  def start_link(tweet) do
-    GenServer.start_link(__MODULE__, tweet, name: __MODULE__)
+  def init(tweetContent) do
+    {:ok,%{name: tweetContent}}
   end
 
-  def init(tweet) do
-    {:ok, %{name: tweet}}
+  def start_link(tweetContent) do
+    GenServer.start_link(__MODULE__, tweetContent, name: __MODULE__)
   end
 
   def handle_call(:get, _from, state) do
     {:reply, {:ok, state}, state}
   end
 
-  def handle_cast({:worker, tweet}, _msg) do
-    send(tweet)
+  def handle_cast({:worker, tweetContent}, _smth) do
+    send(tweetContent)
     {:noreply, %{}}
   end
 
-  def decode_id(tweet) do
-    decode = Poison.decode!(tweet.data)
-    decode["message"]["tweet"]["id"]
-  end
-
-  def decode_tweet(tweet) do
-    decode = Poison.decode!(tweet.data)
+  @spec decode_tweet(
+          atom
+          | %{
+              :data =>
+                binary
+                | maybe_improper_list(
+                    binary | maybe_improper_list(any, binary | []) | byte,
+                    binary | []
+                  ),
+              optional(any) => any
+            }
+        ) :: any
+  def decode_tweet(tweetContent) do
+    decode = Poison.decode!(tweetContent.data)
     decode["message"]["tweet"]["text"]
   end
 
-  def send(tweet) do
-    decoded = decode_tweet(tweet)
-    decodedId = decode_id(tweet)
-    send = to_string(decodedId) <> " s " <> to_string(decoded) <> "*^*"
-    GenServer.cast(Collector, {:data, send})
+  @spec decode_id(
+          atom
+          | %{
+              :data =>
+                binary
+                | maybe_improper_list(
+                    binary | maybe_improper_list(any, binary | []) | byte,
+                    binary | []
+                  ),
+              optional(any) => any
+            }
+        ) :: any
+  def decode_id(tweetContent) do
+    decode = Poison.decode!(tweetContent.data)
+    decode["message"]["tweet"]["id"]
+  end
+
+  def send(tweetContent) do
+    decodedTweet = decode_tweet(tweetContent)
+    decodedId = decode_id(tweetContent)
+    toSend = to_string(decodedId) <> " t " <> to_string(decodedTweet) <> "*^*"
+    GenServer.cast(Collector,{:data, toSend})
   end
 
 end

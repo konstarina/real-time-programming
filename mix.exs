@@ -3,7 +3,7 @@ defmodule TwitterStream.MixProject do
 
   def project do
     [
-      app: :app,
+      app: :stream_app,
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
@@ -14,7 +14,7 @@ defmodule TwitterStream.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Tweet.Application, []}
+      mod: {Tweet.Main, []}
     ]
   end
 
@@ -23,7 +23,9 @@ defmodule TwitterStream.MixProject do
     [
       {:mongodb, "~> 0.5.1"},
       {:eventsource_ex, "~> 0.0.2"},
-      {:poison, "~> 1.4.0"}
+      {:poison, "~> 1.4.0"},
+#      {:mongodb_driver, "~> 0.6"},
+#      {:mongodb, "~> 0.5.1"},
     ]
   end
 end

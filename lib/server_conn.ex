@@ -1,4 +1,4 @@
-defmodule Server_conn do
+defmodule Connection do
   @moduledoc false
   def start_link(url) do
     {:ok, _pid} = EventsourceEx.new(url, stream_to: self())

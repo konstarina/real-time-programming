@@ -1,9 +1,8 @@
 defmodule Tweet.Main do
   @moduledoc false
-  
-
-
   use Application
+
+
   @impl true
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
@@ -15,7 +14,7 @@ defmodule Tweet.Main do
       },
       %{
         id: Collector,
-        start: {Collector, :start_link, [""]}
+        start: {Collector, :start_link, []}
       },
       %{
         id: Sentiments.Supervisor,

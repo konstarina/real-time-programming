@@ -4,7 +4,7 @@ defmodule Database do
 use GenServer
 
   def start_link(string) do
-    GenServer.start_link(__MODULE__, string, %{time: :os.system_time(:millisecond)}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, string, name: __MODULE__)
   end
 
   def init(_msg) do
@@ -17,7 +17,7 @@ use GenServer
     Mongo.insert_one!(pid, collection, string)
   end
  #adaptive batching with a batch size 128
- 
+
   @impl true
   def handle_cast({:data, item}, list, state) do
     window = :os.system_time(:millisecond)

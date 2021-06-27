@@ -20,6 +20,7 @@ defmodule Router do
     GenServer.cast(Users.Worker, {:worker, message})
     Engagement.Supervisor.addWorker(message)
     GenServer.cast(Engagement.Worker, {:worker, message})
+    Publisher.Supervisor.addWorker(message)
     {:noreply, state}
   end
 end

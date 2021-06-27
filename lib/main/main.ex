@@ -1,13 +1,20 @@
 defmodule Tweet.Main do
   @moduledoc false
   use Application
-
+  require Logger
 
   @impl true
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
+    Node.connect(:"broker@localhost")
+    Logger.info("connected to broker")
+
     children = [
+      %{
+        id: Publisher.Supervisor,
+        start: {Publisher.Supervisor, :start_link, [""]}
+      },
       %{
         id: Database,
         start: {Database, :start_link, [""]}

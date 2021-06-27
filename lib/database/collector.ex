@@ -116,6 +116,8 @@ defmodule Collector do
     end
     to_send = Map.put(to_send, type, value)
     IO.inspect(to_send)
+
     GenServer.cast(DBConnect, {:data, to_send})
+    GenServer.cast(Publisher.Worker, {:data, to_send})
   end
 end

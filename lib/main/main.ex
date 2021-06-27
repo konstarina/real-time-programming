@@ -48,11 +48,13 @@ defmodule Tweet.Main do
       },
       %{
         id: Connection1,
-        start: {Connection, :start_link, ["http://localhost:4000/tweets/1"]}
+        # use http://localhost:4000/tweets/1 for local development
+        start: {Connection, :start_link, ["http://rtp-tweets-faf18x:4000/tweets/1"]}
       },
       %{
         id: Connection2,
-        start: {Connection, :start_link, ["http://localhost:4000/tweets/2"]}
+        # use http://localhost:4000/tweets/1 for local development
+        start: {Connection, :start_link, ["http://rtp-tweets-faf18x:4000/tweets/2"]}
       },
     ]
     opts = [strategy: :one_for_one, name: Tweet.Supervisor]

@@ -1,21 +1,30 @@
-version: "3.6"
+version: "3.7"
+
 services:
-
-  server:
-    image: alexburlacu/rtp-server:faf18x
-    ports:
-      - 4000:4000
-
   broker:
     build:
       context: broker
     ports:
-      - 4444:4444
+      # opened for telnet testing
+      - 4040:4040
 
-  previouslab:
+  app:
     build:
-      context: previouslab
-
+      context: .
+    command: sh -c "sleep 10 && elixir --sname broker@localhost -S mix run --no-halt"
     depends_on:
-      - server
+      - rtp-tweets-faf18x
       - broker
+      - mongo
+
+  rtp-tweets-faf18x:
+    container_name: rtp-tweets-faf18x
+    image: alexburlacu/rtp-server:faf18x
+    ports:
+      - 4000:4000
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017

@@ -13,7 +13,8 @@ use GenServer
   end
 
   defp insert_to_db(string, collection) do
-    {:ok, pid} = Mongo.start_link(url: "mongodb://localhost:27017/tweets_processed")
+    # use mongodb://localhost:27017/tweets_processed for local development
+    {:ok, pid} = Mongo.start_link(url: "mongodb://mongo:27017/tweets_processed")
     Mongo.insert_one!(pid, collection, string)
   end
  #adaptive batching with a batch size 128
